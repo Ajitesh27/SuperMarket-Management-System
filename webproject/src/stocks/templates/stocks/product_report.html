@@ -1,0 +1,45 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block title%}Products Report{%endblock%}
+
+{% block header%}
+    {% include 'easy_pdf/header.html' %}
+{%endblock%}
+{% block content %}
+    <div class="details">
+        <div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {% for title in titles %}
+                            {% if title in 'NAME,' %}
+                                <td colspan="3" valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% elif title in 'DESCRIPTION,' %}
+                                <td colspan="4" valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% else %}
+                                <td valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-sm">
+                <tbody>
+                    <hr class="hritem"/>
+                {% for stock in data %}
+                    <tr>
+                        <td colspan="3" valign="top">{{ stock.name }}</td>
+                        <td colspan="4" valign="top">{{ stock.description }}</td>
+                        <td valign="top">{{ stock.quantity }}</td>
+                        <td valign="top">{{ stock.unit_price }}</td>
+                        <td valign="top">{{ stock.stock_level }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {% include 'easy_pdf/footer.html' %}
+{%endblock%}

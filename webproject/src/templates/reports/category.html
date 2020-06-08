@@ -1,0 +1,60 @@
+{% load static %}
+
+<div class="container my-2">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">Expenses Category List</h5>
+    </div>
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- content -->
+    <div class="text-monospace">
+        {% if not category_list %}        
+            <div class="d-flex justify-content-center">
+                <p>No records found!</p>
+            </div>
+        {% else %}
+            <div class="row text-muted border-bottom mb-2">
+                <div class="col-3 pl-3">Name</div>
+                <div class="col-4 px-0">Description</div>
+                <div class="col-2 px-0">Created By</div>
+                <div class="col-3 px-0">Date of Creation</div>
+            </div>
+            {% for category in category_list %}
+                <div class="parent">
+                    <div class="row highlight bg-light mb-2 py-2">
+                        <div class="col-3 pl-3">{{ category.name }}</div>
+                        <div class="col-4 px-0">{{ category.description }}</div>
+                        <div class="col-2 px-0">{{ category.created_by }}</div>
+                        <div class="col-3 px-0">{{ category.created_at }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="page" class="pagination justify-content-end mt-4"> 
+                <span class="step-links">
+                    <span>
+                        {% if page_obj.has_previous %}
+                            <a class="btn" href="#{% url 'categories' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                        {% endif %}
+                    </span>
+                    <span>
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+                    <span>
+                        {% if page_obj.has_next %}
+                            <a class="btn" href="#{% url 'categories' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">NEXT</a>
+                        {% endif %}
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+    </div>
+    <!-- End of content -->
+</div>

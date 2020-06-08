@@ -1,0 +1,52 @@
+{% extends 'accounts/nav.html' %}
+
+{% block title%}Settings{%endblock%}
+
+{% block content %}
+    <script>
+        $(document).ready(function() {
+            $("#view").load("{% url 'user' %}");
+            $("#index #disp a").click(function() {
+                $("a.selected").removeClass("selected")
+                $(this).addClass("selected");
+                page = "{% url 'user' %}"
+                comp = "{% url 'edit_company' 1 %}"
+                pageurl = ""
+                if ($(this).attr("id") == 'products'){
+                    pageurl = page.replace("user",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "stocks");
+                } else if ($(this).attr("id") == 'purchases'){
+                    pageurl = page.replace("user",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "purchases");
+                }else if ($(this).attr("id") == 'sales'){
+                    pageurl = page.replace("user",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "sales");
+                }else if ($(this).attr("id") == 'categories'){
+                    pageurl = page.replace("user",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "expenses");
+                }else if ($(this).attr("id") == 'expenses'){
+                    pageurl = page.replace("user",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "expenses");
+                }else if ($(this).attr("id") == 'company'){
+                    pageurl = comp.replace("accounts", "company")
+                }else{
+                    pageurl = page.replace("user",$(this).attr("id"));
+                }
+                $("#view").load(pageurl);
+            });
+        });
+    </script>
+    <div class="container my-4" style="max-width: 90%;">
+        <div id=disp class="sidenav">
+            <a id =user class="selected" href="#users"></i>Users</a>
+            <a id ="roles" href="#roles">Roles</a> 
+            <a id="products" href="http://localhost:8000/api/stocks/">Stocks</a>
+            <a id="purchases" href="#purchases">Purchases</a>
+            <a id="categories" href="#categories">Expenses</a>
+            <a id="company" href="#company">Company</a>
+        </div>
+        <div class="embed-responsive main" style="max-width: 92%;">
+            <div id='view'></div>
+        </div>
+    </div>
+{% endblock %}

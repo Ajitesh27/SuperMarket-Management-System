@@ -1,0 +1,44 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block title%}Sales Receipt{%endblock%}
+
+{% block header%}
+    {% include 'easy_pdf/header.html' %}
+{%endblock%}
+{% block content %}
+    <div class="details">
+        <div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <td colspan="4" valign="top"><small ><strong>Name</strong></small></td>
+                        <td><small ><strong>Quantity</strong></small></td>
+                        <td colspan="2"><small><strong>Unit Price</strong></small></td>
+                        <td colspan="2" valign="top"><small ><strong>Total Amount</strong></small></td>
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-sm">
+                <tbody>
+                    <hr class="hritem"/>
+                {% for sales in data %}
+                    <tr>
+                        <td colspan="4">{{ sales.name }}</td>
+                        <td>{{ sales.quantity }}</td>
+                        <td colspan="2">{{ sales.unit_price }}</td>
+                        <td colspan="2" >{{ sales.total_amount }}</td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td colspan="7"><strong>Grand Total</strong></td>
+                        <td colspan="2" ><strong>{{ total_sales.total_amount__sum }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+ 
+{% endblock %}
+{% block footer %}
+    {% include 'easy_pdf/footer.html' %}
+{%endblock%}

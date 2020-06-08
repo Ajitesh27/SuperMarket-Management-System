@@ -1,0 +1,47 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block title%}Expenses Report{%endblock%}
+
+{% block header%}
+    {% include 'easy_pdf/header.html' %}
+{%endblock%}
+{% block content %}
+    <div class="details">
+        <div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {% for title in titles %}
+                            {% if title in 'CREATED AT,' %}
+                                <td colspan="5" valign="top"><small ><strong>DATE OF EXPENSE</strong></small></td>
+                            {% elif title in 'CREATED BY,' %}
+                                <td colspan="2" valign="top"><small ><strong>REGISTERED BY</strong></small></td>
+                            {% elif title in 'DESCRIPTION,' %}
+                                <td colspan="5" valign="top"><small><strong>{{ title }}</strong></small></td>
+                            {% else %}
+                                <td colspan="2" valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-sm">
+                <tbody>
+                    <hr class="hritem"/>
+                {% for expense in data %}
+                    <tr>
+                        <td colspan="2" valign="top">{{ expense.category }}</td>
+                        <td colspan="5" valign="top">{{ expense.description }}</td>
+                        <td colspan="2" valign="top">{{ expense.amount }}</td>
+                        <td colspan="2" valign="top">{{ expense.created_by }}</td>
+                        <td colspan="5" valign="top">{{ expense.created_at }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {% include 'easy_pdf/footer.html' %}
+{%endblock%}

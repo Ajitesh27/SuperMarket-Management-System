@@ -1,0 +1,54 @@
+{% extends 'accounts/base.html' %}
+
+{% load static %}
+
+{% block header %}
+    <div class="site-header text-monospace">
+        <div class="d-flex flex-column py-3 bg-dark flex-md-row">
+            <ul class=" container nav justify-content-between">
+                <li class="nav-item">
+                    <a class="navbar-brand text-white" href="/">
+                        <img id="nav_logo" src="{% static 'images/logo1.png' %}" width="30" height="30" class="d-inline-block align-top" alt="Logo">
+                        <span id="nav_title">Super Market Management System</span>
+                    </a>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="navbar-brand small text-white dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user mr-1"></i>{{ user.username }}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item"
+                                title="Edit Staff Detail"
+                                href="{% url 'edit' user.id %}"
+                                rel="modal:open"><i class='fas fa-user-edit mr-1 text-primary'></i>Edit Profile</a>
+
+                            <a class="dropdown-item"
+                                title="Update Password"
+                                href="{% url 'change_password' %}"
+                                rel="modal:open"><i class='fas fa-edit mr-1 text-primary'></i>Change Password</a>
+
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out text-primary mr-1"></i>Log Out</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="navbar-brand small text-white" href="{% url 'login' %}"><i class="fa fa-sign-in text-primary mr-1"></i>Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% if request.user.is_authenticated %}
+            <nav class="border border-bottom py-3 shadow-sm bg-light">
+                <div id="menu" class="container d-flex justify-content-center text-dark my-0">
+                    <a id="dash" class="px-0 py-2 mx-3 d-none nav-link d-md-inline-block text-right text-muted" href="{% url 'home' %}"><i class="fa fa-dashboard mr-1"></i>Dashboard</a>
+                    <a id="transactions" class="px-0 py-2 mx-3 d-none nav-link d-md-inline-block text-right text-muted" href="{% url 'transactions' %}"><i class="fas fa-handshake mr-1"></i>Transactions</a>
+                    <a id="reports" class="px-0 py-2 mx-3 d-none nav-link d-md-inline-block text-right text-muted" href="{% url 'reports' %}"><i class='fas fa-envelope-open-text mr-1'></i>Reports</a>
+                    {% if request.user.groups.all.0.name in  'Admin,Manager,General Manager' %}
+                        <a id="sett" class="px-0 py-2 mx-3 d-none nav-link d-md-inline-block text-right text-muted" href="{% url 'setting' %}"><i class="fa fa-cog fa-spin mr-1"></i>Settings</a>
+                    {% endif %}
+                </div>
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}
+  

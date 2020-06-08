@@ -1,0 +1,73 @@
+{% load static %}
+
+<script>
+    $(document).ready(function () {
+        var $roles_url = $('#index .roles0').attr('data-url');
+        var $stocks_url = $('#index .stocks1').attr('data-url');
+        var $sales_url = $('#index .sales0').attr('data-url');
+        var $expenses_url = $('#index .expenses0').attr('data-url');
+        $.ajax({
+            url: $roles_url,
+            dataType: 'json',
+            success: function (data) {
+                if(data.series[0].data.length > 0){
+                    Highcharts.chart("roles0", data);
+                    $('#index .highcharts-credits').remove()
+                }
+            }
+        });
+        $.ajax({
+            url: $stocks_url,
+            dataType: 'json',
+            success: function (data) {
+                if(data.series[0].data.length > 0){
+                    Highcharts.chart("stocks1", data);
+                    $('#index .highcharts-credits').remove()
+                }
+            }
+        });
+        $.ajax({
+            url: $sales_url,
+            dataType: 'json',
+            success: function (data) {
+                if(data.series[0].data.length > 0){
+                    Highcharts.chart("sales0", data);
+                    data.chart.type = 'column'
+                    Highcharts.chart("sales1", data);
+                    $('#index .highcharts-credits').remove()
+                }
+            }
+        });
+        $.ajax({
+            url: $expenses_url,
+            dataType: 'json',
+            success: function (data) {
+                if(data.series[0].data.length > 0){
+                    Highcharts.chart("expenses0", data);
+                    data.chart.type = 'column'
+                    Highcharts.chart("expenses1", data);
+                    $('#index .highcharts-credits').remove()
+                }
+            }
+        });
+    });
+</script>
+<div class="container my-4" style="max-width: 90%;">
+    <h5 class="text-uppercase font-weight-lighter text-primary ml-3">Analytics</h5>
+    <div class="row justify-content-center">
+        <div id="roles0" class="roles0 mt-5 col-5 shadow" name="roles0" data-url="{% url 'roles_data' %}"></div>
+        <div id="stocks1" class="stocks1 ml-5 mt-5 col-5 shadow" name="stocks1" data-url="{% url 'stocks_data' %}"></div>
+    </div>
+</div>
+<div class="container my-5" style="max-width: 90%;">
+    <div class="row my-5 justify-content-center">
+        <div id="sales0" class="sales0 mt-5 col-5 shadow" name="sales0" data-url="{% url 'sales_data' %}"></div>
+        <div id="sales1" class="sales1 ml-5 mt-5 col-5 shadow" name="sales1"></div>
+    </div>
+</div>
+<div class="container my-5" style="max-width: 90%;">
+    <div class="row my-5 justify-content-center">
+        <div id="expenses0" class="expenses0 mt-5 col-5 shadow" name="expenses0" data-url="{% url 'expenses_data' %}"></div>
+        <div id="expenses1" class="expenses1 ml-5 mt-5 col-5 shadow" name="expenses1"></div>
+    </div>
+</div>

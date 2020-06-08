@@ -1,0 +1,75 @@
+{% load static %}
+<script>
+    $(document).ready(function() {
+        var logo = document.getElementById('nav_logo');
+        var img = document.getElementById("comp_logo").getAttribute("src");
+        //logo.setAttribute("src", img);
+    });
+</script>
+<div class="container my-2">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">Expenses List</h5>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal" style="z-index: 50px">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- End of modal -->
+    <!-- content -->
+    <div class="text-monospace">
+        {% if not expenses %}        
+            <div class="d-flex justify-content-center">
+                <p>No expenses registered yet!</p>
+            </div>
+        {% else %}
+            <div class="row text-muted border-bottom mb-2">
+                <div class="col-2 pl-3">Category</div>
+                <div class="col-3 px-0">Description</div>
+                <div class="col-2 pl-2">Amount</div>
+                <div class="col-2 px-0">Registered By</div>
+                <div class="col-3 px-0">Date of Expense</div>
+            </div>
+            {% for expense in expenses %}
+                <div class="parent">
+                    <div class="row highlight bg-light mb-2 py-2">
+                        <div class="col-2 pl-3">{{ expense.category }}</div>
+                        <div class="col-3 px-0">{{ expense.description }}</div>
+                        <div class="col-2 pl-2">{{ expense.amount }}</div>
+                        <div class="col-2 px-0">{{ expense.created_by }}</div>
+                        <div class="col-3 px-0">{{ expense.created_at }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="page" class="pagination justify-content-end mt-4"> 
+                <span class="step-links">
+                    <span>
+                        {% if page_obj.has_previous %}
+                            <a class="btn" href="#{% url 'expenses' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                        {% endif %}
+                    </span>
+                    <span>
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+                    <span>
+                        {% if page_obj.has_next %}
+                            <a class="btn" href="#{% url 'expenses' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">NEXT</a>
+                        {% endif %}
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+    </div>
+    <!-- End of content -->
+</div>

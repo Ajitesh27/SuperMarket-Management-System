@@ -1,0 +1,47 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block title%}Purchase Report{%endblock%}
+
+{% block header%}
+    {% include 'easy_pdf/header.html' %}
+{%endblock%}
+{% block content %}
+    <div class="details">
+        <div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {% for title in titles %}
+                            {% if title in 'SUPPLIER TEL,' %}
+                                <td colspan="2" valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% elif title in 'DESCRIPTION,' %}
+                                <td colspan="3" valign="top"><small><strong>{{ title }}</strong></small></td>
+                            {% else %}
+                                <td valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-sm">
+                <tbody>
+                    <hr class="hritem"/>
+                {% for purchase in data %}
+                    <tr>
+                        <td valign="top">{{ purchase.name }}</td>
+                        <td colspan="3" valign="top">{{ purchase.description }}</td>
+                        <td valign="top">{{ purchase.quantity }}</td>
+                        <td valign="top">{{ purchase.cost_price }}</td>
+                        <td valign="top">{{ purchase.current_stock_level }}</td>
+                        <td valign="top">{{ purchase.total_stock_level }}</td>
+                        <td colspan="2" valign="top">+{{ purchase.supplier_tel }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {% include 'easy_pdf/footer.html' %}
+{%endblock%}

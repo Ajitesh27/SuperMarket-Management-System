@@ -1,0 +1,71 @@
+{% extends 'accounts/nav.html' %}
+
+{% block title%}Dashboard{%endblock%}
+{% block content %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById("user_logo").style.display = "none";
+            var logo = document.getElementById('nav_logo')
+            var logoText = document.getElementById('nav_title')
+            var img = document.getElementById("user_logo").getAttribute("src")
+            var title = document.getElementById("user_logo").getAttribute("alt")
+            //logo.src = img;
+            logoText.innerHTML = title;
+        });
+    </script>
+    <div class="container my-4" style="max-width: 90%;">
+        <img id="user_logo" src="/media/{{ logo1.png }}" alt="{{ company.name }}">
+        <!-- <img id="user_logo" src="/media/{{ company.logo }}" alt="{{ company.name }}"> -->
+        <h5 class="text-uppercase font-weight-lighter text-primary ml-3">Summary</h5>
+        <div class="row justify-content-center">
+            <a class="navbar-brand" href="{% url 'reports' %}">
+                <div class="card shadow my-4 mx-4" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">Total Users</h5>
+                        <h4 class="card-text text-primary font-weight-bold">{{ users }}</h4>
+                    </div>
+                </div>
+            </a>
+            <a class="navbar-brand" href="{% url 'reports' %}">
+                <div class="card shadow my-4 mx-4" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">Total User Roles</h5>
+                        <h4 class="card-text text-primary font-weight-bold">{{ roles }}</h4>
+                    </div>
+                </div>
+            </a>
+            <a class="navbar-brand" href="{% url 'reports' %}">
+                <div class="card shadow my-4 mx-4" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">Total Purchases</h5>
+                        <h4 class="card-text text-primary font-weight-bold">{{ purchases }}</h4>
+                    </div>
+                </div>
+            </a>
+            <a class="navbar-brand" href="{% url 'reports' %}">
+                <div class="card shadow my-4 mx-4" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">Total Stock Types</h5>
+                        <h4 class="card-text text-primary font-weight-bold">{{ stocks }}</h4>
+                    </div>
+                </div>
+            </a>
+            <a class="navbar-brand" href="{% url 'reports' %}">
+                <div class="card shadow my-4 mx-4" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">Total Sales Transactions</h5>
+                        <h4 class="card-text text-primary font-weight-bold">{{ sales }}</h4>
+                    </div>
+                </div>
+            </a>
+            <a class="navbar-brand" href="{% url 'reports' %}">
+                <div class="card shadow my-4 mx-4" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted">Total Expenses Category</h5>
+                        <h4 class="card-text text-primary font-weight-bold">{{ category }}</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+{% endblock %}

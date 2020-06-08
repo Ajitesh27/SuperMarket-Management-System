@@ -1,0 +1,47 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block title%}Accounts Report{%endblock%}
+
+{% block header%}
+    {% include 'easy_pdf/header.html'%}
+{%endblock%}
+{% block content %}
+    <div class="details">
+        <div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {% for title in titles %}
+                            <td><small ><strong>{{ title }}</strong></small></td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-sm">
+                <tbody>
+                    <hr class="hritem"/>
+                {% for account in data %}
+                    <tr>
+                        <td>{{ account.username }}</td>
+                        <td>{{ account.groups }}</td>
+                        <td>{{ account.email }}</td>
+                        <td>{% if account.is_admin %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}</td>
+                        <td>{% if account.is_active %}
+                                Active
+                            {% else %}
+                                Disabled
+                            {% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {% include 'easy_pdf/footer.html' %}
+{%endblock%}

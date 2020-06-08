@@ -1,0 +1,48 @@
+{% extends "easy_pdf/base.html" %}
+
+{% block title%}Sales Report{%endblock%}
+
+{% block header%}
+    {% include 'easy_pdf/header.html' %}
+{%endblock%}
+{% block content %}
+    <div class="details">
+        <div>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {% for title in titles %}
+                            {% if title in 'SOLD AT,' %}
+                                <td colspan="4" valign="top"><small ><strong>DATE OF SALE</strong></small></td>
+                            {% elif title in 'SOLD BY,' %}
+                                <td valign="top"><small ><strong>SELLER</strong></small></td>
+                            {% elif title in 'NAME,' %}
+                                <td colspan="3" valign="top"><small><strong>{{ title }}</strong></small></td>
+                            {% else %}
+                                <td valign="top"><small ><strong>{{ title }}</strong></small></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+            </table>
+            <table class="table table-sm">
+                <tbody>
+                    <hr class="hritem"/>
+                {% for sales in data %}
+                    <tr>
+                        <td colspan="3">{{ sales.name }}</td>
+                        <td>{{ sales.quantity }}</td>
+                        <td>{{ sales.unit_price }}</td>
+                        <td>{{ sales.total_amount }}</td>
+                        <td>{{ sales.sold_by }}</td>
+                        <td colspan="4">{{ sales.sold_at }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {% include 'easy_pdf/footer.html' %}
+{%endblock%}

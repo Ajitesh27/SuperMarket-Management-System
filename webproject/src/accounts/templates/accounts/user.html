@@ -1,0 +1,113 @@
+{% load static %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        document.getElementById("user_logo").style.display = "none";
+        var logo = document.getElementById('nav_logo')
+        var logoText = document.getElementById('nav_title')
+        var img = document.getElementById("user_logo").getAttribute("src")
+        var title = document.getElementById("user_logo").getAttribute("alt")
+        //logo.src = img;
+        logoText.innerHTML = title;
+        $("#index #page a").click(function() {
+            page = $(this).attr("href");
+            pageurl = page.replace("#",'');
+            $("#view").load(pageurl);
+        });
+    });
+</script>
+<div class="container my-2">
+    <!-- <img id="user_logo" src="/media/{{ company.logo }}" alt="{{ company.name }}"> -->
+    <img id="user_logo" src="/media/{{ logo1.png }}" alt="{{ company.name }}">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">User Account</h5>
+        <a class="nav-link border border-primary px-3 py-2 text-primary"
+            href="{% url 'signup' %}"
+            title="Add Staff Member"
+            rel="modal:open"><i class="fa fa-user-plus mr-1"></i>Add User</a>
+    </div>
+    <!-- Modal -->
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- End of modal -->
+    <!-- content -->
+    <div class="text-monospace">
+        <div class="row text-muted border-bottom mb-2">
+            <div class="col-2 pl-4">Username</div>
+            <div class="col-2 px-0">Role</div>
+            <div class="col-3 px-0">Email</div>
+            <div class="col-1">Admin</div>
+            <div class="col-1">Status</div>
+            <div class="col-3 pl-5">&nbsp;Action</div>
+        </div>
+        {% for user in user_list %}
+            <div class="parent">
+                <div class="row highlight bg-light mb-2 py-2">
+                    <div class="col-2 pl-4">{{ user.username }}</div>
+                    <div class="col-2 px-0">{{ user.groups.all.0.name }}</div>
+                    <div class="col-3 px-0">{{ user.email }}</div>
+                    <div class="col-1">
+                        {% if user.is_admin %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </div>
+                    <div class="col-1">
+                        {% if user.is_active %}
+                            Active
+                        {% else %}
+                            Disabled
+                        {% endif %}
+                    </div>
+                    <div class="col-3 pl-5">
+                        {% if user.is_active %}
+                            <a class="btn btn-sm text-danger"
+                                title="Deactivate Account"
+                                href="{% url 'deactivate' user.id %}"
+                                rel="modal:open"><i class="fa fa-toggle-off mr-1"></i>Deactivate</a>
+                            <a class="btn btn-sm"
+                                title="Edit Staff Detail"
+                                href="{% url 'edit' user.id %}"
+                                rel="modal:open"><i class='fas fa-user-edit mr-1 text-primary'></i>Edit</a></div>
+                        {% else %}
+                            <a class="btn btn-sm mr-3"
+                                title="Activate Account"
+                                href="{% url 'activate' user.id %}"
+                                rel="modal:open"><i class="fa fa-toggle-on mr-1"></i>Activate</a>
+                            <a class="btn btn-sm disabled text-muted"
+                                title="Edit Staff Detail"
+                                href="{% url 'edit' user.id %}"
+                                rel="modal:open"><i class='fas fa-user-edit mr-1'></i>Edit</a></div>
+                        {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div id="page" class="pagination justify-content-end mt-4"> 
+            <span class="step-links">
+                <span>
+                    {% if page_obj.has_previous %}
+                        <a class="btn" href="#{% url 'user' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                    {% else %}
+                        <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                    {% endif %}
+                </span>
+                <span>
+                    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                </span>
+                <span>
+                    {% if page_obj.has_next %}
+                        <a class="btn" href="#{% url 'user' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                    {% else %}
+                        <a href="#" class="btn disabled text-muted">NEXT</a>
+                    {% endif %}
+                </span>
+            </span>
+        </div>
+    </div>
+    <!-- End of content -->
+</div>

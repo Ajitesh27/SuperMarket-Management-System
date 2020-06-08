@@ -1,0 +1,13 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/report.css' %}">
+    <title>SuperMarket Management System - {% block title %}{%endblock%}</title>
+</head>
+<body>
+    {%block header%}{%endblock%}
+    {%block content%}{%endblock%}
+    {%block footer%}{%endblock%}
+</body>
