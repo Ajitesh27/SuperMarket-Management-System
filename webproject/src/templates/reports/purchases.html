@@ -1,0 +1,96 @@
+{% load static %}
+<script>
+    function search(val){
+        if (val != ""){
+            pageurl = href="{% url 'search_purchase' %}?q="+val;
+            $("#view").load(pageurl);
+        }else{
+            $("#view").load("{% url 'purchases_list' %}");
+        }
+    }
+    $(document).ready(function() {
+        $("button").click(function() {
+            $("#view").load("{% url 'purchases_list' %}");
+        });
+    });
+</script>
+<div class="container my-2">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">Purchases List</h5>
+        {% if purchases %}  
+            <div class="form-row">
+                <div class="col col-md-8">
+                    <input type="text" name="search" class="form-control" placeholder="Enter search name" oninput="search(this.value)"> 
+                </div>
+                <div class="col col-md-2">
+                    <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+                </div>
+            </div> 
+            <a class="nav-link border border-primary px-4 py-1 text-primary"
+                href="{% url 'purchase_report' %}"
+                title="Purchase Report"><i class="fa fa-file-pdf-o mr-1"></i>Export</a>    
+        {% endif %}
+    </div>
+    {% if not purchases %}
+        <div class="d-flex text-monospace justify-content-center">
+            <p class="">No records found! <br /><br />
+            <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+            </p>
+        </div>
+    {% endif %}
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- content -->
+    <div class="text-monospace">
+        {% if purchases %}
+            <div class="row text-muted border-bottom mb-2">
+                <div class="col-2 pl-3">Name</div>
+                <div class="col-4 px-0">Description</div>
+                <div class="col-1 pl-2">Quantity</div>
+                <div class="col-1 px-0">Cost Price</div>
+                <div class="col-1 px-0">Current Stock Level</div>
+                <div class="col-1 px-0">Total Stock Level</div>
+                <div class="col-2 px-0">Supplier Tel.</div>
+            </div>
+            {% for purchase in purchases %}
+                <div class="parent">
+                    <div class="row highlight bg-light mb-2 py-2">
+                        <div class="col-2 pl-3">{{ purchase.name }}</div>
+                        <div class="col-4 px-0">{{ purchase.description }}</div>
+                        <div class="col-1 pl-2">{{ purchase.quantity }}</div>
+                        <div class="col-1 px-0">{{ purchase.cost_price }}</div>
+                        <div class="col-1 px-0">{{ purchase.current_stock_level }}</div>
+                        <div class="col-1 px-0">{{ purchase.total_stock_level }}</div>
+                        <div class="col-2 px-0">+{{ purchase.supplier_tel }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="page" class="pagination justify-content-end mt-4"> 
+                <span class="step-links">
+                    <span>
+                        {% if page_obj.has_previous %}
+                            <a class="btn" href="#{% url 'purchases' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                        {% endif %}
+                    </span>
+                    <span>
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+                    <span>
+                        {% if page_obj.has_next %}
+                            <a class="btn" href="#{% url 'purchases' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">NEXT</a>
+                        {% endif %}
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+    </div>
+    <!-- End of content -->
+</div>

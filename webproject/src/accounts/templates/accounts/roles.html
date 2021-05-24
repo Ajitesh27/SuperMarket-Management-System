@@ -1,0 +1,85 @@
+{% load static %}
+<div class="container my-2">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">User Roles</h5>
+        <a class="nav-link border border-primary px-3 py-2 text-primary"
+            href="{% url 'role' %}"
+            title="Add New Role"
+            rel="modal:open"><i class="fa fa-plus mr-1"></i>New Role</a>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal" style="z-index: 50px">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#index #page a").click(function() {
+                page = $(this).attr("href");
+                pageurl = page.replace("#",'');
+                $("#view").load(pageurl);
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- End of modal -->
+    <!-- content -->
+    <div class="text-monospace">
+        <div class="row text-muted border-bottom mb-2">
+            <div class="col-3 pl-5">Role</div>
+            <div class="col-6 px-0">Description</div>
+            <div class="col-1 px-0">Users</div>
+            <div class="col-2 pl-4">Action</div>
+        </div>
+
+        {% for role in role_list %}
+            <div class="parent">
+                <div class="row highlight bg-light mb-2 py-2">
+                    <div class="col-3 pl-5">{{ role.name }}</div>
+                    <div class="col-6 px-0">{{ role.description }}</div>
+                    <div class="col-1 px-0">{{ role.user_set.count }}</div>
+                    <div class="col-2 px-0">
+                        <a class="btn btn-sm"
+                            title="Edit Role"
+                            href="{% url 'edit_role' role.id %}"
+                            rel="modal:open"><i class="fa fa-edit mr-1"></i>Edit</a>
+                        <a class="btn btn-sm text-danger"
+                            title="Delete Role"
+                            href="{% url 'delete_role' role.id %}"
+                            rel="modal:open"><i class="fa fa-trash mr-1"></i>Delete</a></div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div id="page" class="pagination justify-content-end mt-4"> 
+            <span class="step-links">
+                <span>
+                    {% if page_obj.has_previous %}
+                        <a class="btn" href="#{% url 'roles' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                    {% else %}
+                        <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                    {% endif %}
+                </span>
+                <span>
+                    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                </span>
+                <span>
+                    {% if page_obj.has_next %}
+                        <a class="btn" href="#{% url 'roles' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                    {% else %}
+                        <a href="#" class="btn disabled text-muted">NEXT</a>
+                    {% endif %}
+                </span>
+            </span>
+        </div>
+    </div>
+    <!-- End of content -->
+</div>

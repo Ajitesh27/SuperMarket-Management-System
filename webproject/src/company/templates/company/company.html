@@ -1,0 +1,71 @@
+{% load widget_tweaks %}
+{% load static %}
+{% block content%}
+    <script>
+        $(document).ready(function() {
+           var logo = document.getElementById('nav_logo')
+           var img = document.getElementById("comp_logo").getAttribute("src")
+           logo.src = img;
+        });
+    </script>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal" style="z-index: 50px">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'edit_company' 1 %}">
+        {% csrf_token %}
+            <div class="modal-header my-0">
+                <h5 class="modal-title">UPDATE COMPANY DETAILS</h5>
+            </div>
+            <div class="modal-body my-0">
+                <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                <img id="comp_logo" src="{{ company.logo.url }}" width="30" height="30" class="d-inline-block align-top" alt=""> <br /><br />
+                <div class="form-row">
+                    {% for field in form %}
+                        {% if field.name in ',logo' %}
+                            <div class="form-group col-md-12 {% if field.errors %} invalid{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% render_field field class="form-control" rows="5" placeholder=field.label %}
+                                {% for error in field.errors %}
+                                    <p class="help-block">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% for field in form %}
+                        {% if field.name not in 'logo,address,created_by' %}
+                            <div class="form-group col-md-6 {% if field.errors %} invalid{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% render_field field class="form-control" placeholder=field.label %}
+                                {% for error in field.errors %}
+                                    <p class="help-block">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% for field in form %}
+                        {% if field.name in ',address' %}
+                            <div class="form-group col-md-12 {% if field.errors %} invalid{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% render_field field class="form-control" rows="5" placeholder=field.label %}
+                                {% for error in field.errors %}
+                                    <p class="help-block">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group justify-content-start">
+                    <button type="submit" class="btn-primary py-1">UPDATE DETAILS</button>
+                    <button type="reset" class="border-primary text-primary px-3 py-1" rel="modal:close">CANCEL</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{%endblock%}

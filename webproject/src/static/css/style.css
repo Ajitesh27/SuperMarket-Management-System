@@ -1,0 +1,40 @@
+#index #menu > a.selected {
+    color: #007bff;
+    border-bottom-style: solid;
+    border-bottom-color: #007bff;
+}
+
+.sidenav {
+    height: auto;
+    width: 130px;
+    position: fixed;
+    z-index: 1;
+    top: 190px;
+    left: 60px;
+    overflow-x: hidden;
+    padding-top: 5px;
+  }
+  
+  .sidenav a {
+    padding: 6px 8px 6px 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #818181;
+    display: block;
+    text-align: left
+  }
+  
+  .sidenav a.selected {
+    color: #ffff;
+    background-color: #007bff
+  }
+  
+  .main {
+    margin-left: 150px;
+    padding: 0px 10px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }

@@ -1,0 +1,92 @@
+{% load static %}
+<script>
+    function search(val){
+        if (val != ""){
+            pageurl = href="{% url 'search_expense' %}?q="+val;
+            $("#view").load(pageurl);
+        }else{
+            $("#view").load("{% url 'expenses_list' %}");
+        }
+    }
+    $(document).ready(function() {
+        $("button").click(function() {
+            $("#view").load("{% url 'expenses_list' %}");
+        });
+    });
+</script>
+<div class="container my-2">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">Expenses List</h5>
+        {% if expenses_list %}  
+            <div class="form-row">
+                <div class="col col-md-8">
+                    <input type="text" name="search" class="form-control" placeholder="Enter search category" oninput="search(this.value)"> 
+                </div>
+                <div class="col col-md-2">
+                    <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+                </div>
+            </div> 
+            <a class="nav-link border border-primary px-4 py-1 text-primary"
+                href="{% url 'expenses_report' %}"
+                title="Expenses Report"><i class="fa fa-file-pdf-o mr-1"></i>Export</a>    
+        {% endif %}
+    </div>
+    {% if not expenses_list %}
+        <div class="d-flex text-monospace justify-content-center">
+            <p class="">No records found! <br /><br />
+            <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+            </p>
+        </div>
+    {% endif %}
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- content -->
+    <div class="text-monospace">
+        {% if expenses_list %}
+            <div class="row text-muted border-bottom mb-2">
+                <div class="col-2 pl-3">Category</div>
+                <div class="col-4 px-0">Description</div>
+                <div class="col-1 pl-2">Amount</div>
+                <div class="col-2 px-0">Registered By</div>
+                <div class="col-3 px-0">Date of Expense</div>
+            </div>
+            {% for expense in expenses_list %}
+                <div class="parent">
+                    <div class="row highlight bg-light mb-2 py-2">
+                        <div class="col-2 pl-3">{{ expense.category }}</div>
+                        <div class="col-4 px-0">{{ expense.description }}</div>
+                        <div class="col-1 pl-2">{{ expense.amount }}</div>
+                        <div class="col-2 px-0">{{ expense.created_by }}</div>
+                        <div class="col-3 px-0">{{ expense.created_at }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="page" class="pagination justify-content-end mt-4"> 
+                <span class="step-links">
+                    <span>
+                        {% if page_obj.has_previous %}
+                            <a class="btn" href="#{% url 'expenses' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                        {% endif %}
+                    </span>
+                    <span>
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+                    <span>
+                        {% if page_obj.has_next %}
+                            <a class="btn" href="#{% url 'expenses' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">NEXT</a>
+                        {% endif %}
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+    </div>
+    <!-- End of content -->
+</div>

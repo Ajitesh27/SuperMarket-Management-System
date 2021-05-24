@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+
+{% block content%}
+    <form method="post" action="{% url 'product' %}">
+    {% csrf_token %}
+        <div class="modal-header my-0">
+            <h5 class="modal-title text-primary">ADD NEW PRODUCT</h5>
+        </div>
+
+        <div class="modal-body my-0">
+            <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+
+            {% for field in form %}
+                <div class="form-group">
+                    {% if field.name not in 'stock_level,created_by' %}
+                        {% if field.name in ',description' %}
+                            <div class="{% if field.errors %} invalid{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% render_field field class="form-control" rows="5" placeholder=field.label %}
+                                {% for error in field.errors %}
+                                    <p class="help-block">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% render_field field class="form-control" placeholder=field.label %}
+                            <div class="{% if field.errors %} invalid{% endif %}">
+                                {% for error in field.errors %}
+                                    <p class="help-block">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="modal-footer form-group justify-content-start">
+            <button type="submit" class="btn-primary py-1">ADD NEW PRODUCT</button>
+            <a href="#close" type="reset" class="btn border border-primary text-primary px-3 py-1" rel="modal:close">CANCEL</a>
+        </div>
+    </form>
+{%endblock%}

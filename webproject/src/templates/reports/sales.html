@@ -1,0 +1,94 @@
+{% load static %}
+<script>
+    function search(val){
+        if (val != ""){
+            pageurl = href="{% url 'search_sale' %}?q="+val;
+            $("#view").load(pageurl);
+        }else{
+            $("#view").load("{% url 'sales_list' %}");
+        }
+    }
+    $(document).ready(function() {
+        $("button").click(function() {
+            $("#view").load("{% url 'sales_list' %}");
+        });
+    });
+</script>
+<div class="container my-2">
+    <div class="row navbar navbar-light mb-3 text-monospace ">
+        <h5 class="text-uppercase font-weight-lighter">Sales List</h5>
+        {% if sales_list %}  
+            <div class="form-row">
+                <div class="col col-md-8">
+                    <input type="text" name="search" class="form-control" placeholder="Enter search name" oninput="search(this.value)"> 
+                </div>
+                <div class="col col-md-2">
+                    <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+                </div>
+            </div> 
+            <a class="nav-link border border-primary px-4 py-1 text-primary"
+                href="{% url 'sales_report' %}"
+                title="Sales Report"><i class="fa fa-file-pdf-o mr-1"></i>Export</a>    
+        {% endif %}
+    </div>
+    {% if not sales_list %}
+        <div class="d-flex text-monospace justify-content-center">
+            <p class="">No records found! <br /><br />
+            <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+            </p>
+        </div>
+    {% endif %}
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- content -->
+    <div class="text-monospace">
+        {% if sales_list %}
+            <div class="row text-muted border-bottom mb-2">
+                <div class="col-3 pl-3">Name</div>
+                <div class="col-1 pl-0">Quantity</div>
+                <div class="col-1 pl-0">Unit Price</div>
+                <div class="col-2 pl-3">Total Amount</div>
+                <div class="col-2 pl-3">Seller</div>
+                <div class="col-3 pl-3">Date of Sell</div>
+            </div>
+            {% for sale in sales_list %}
+                <div class="parent">
+                    <div class="row highlight bg-light mb-2 py-2">
+                        <div class="col-3 pl-3">{{ sale.name }}</div>
+                        <div class="col-1 pl-0">{{ sale.quantity }}</div>
+                        <div class="col-1 pl-0">{{ sale.unit_price }}</div>
+                        <div class="col-2 pl-3">{{ sale.total_amount }}</div>
+                        <div class="col-2 pl-3">{{ sale.sold_by }}</div>
+                        <div class="col-3 pl-3">{{ sale.sold_at }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="page" class="pagination justify-content-end mt-4"> 
+                <span class="step-links">
+                    <span>
+                        {% if page_obj.has_previous %}
+                            <a class="btn" href="#{% url 'sales' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                        {% endif %}
+                    </span>
+                    <span>
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+                    <span>
+                        {% if page_obj.has_next %}
+                            <a class="btn" href="#{% url 'sales' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">NEXT</a>
+                        {% endif %}
+                    </span>
+                </span>
+            </div>
+        {% endif %}
+    </div>
+    <!-- End of content -->
+</div>

@@ -1,0 +1,29 @@
+{% extends "accounts/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+{% block title%}Home{%endblock%}
+
+{% block content%}
+  <div class="d-md-flex flex-md-equal w-100 pl-5 pt-5">
+        <div class="ml-md-4 pt-5 px-3 pt-md-5 px-md-5 overflow-hidden">
+            <div class="my-5 pt-5 ml-2 px-0 w-50">
+                <img class="display-5 mr-2" src="{% static 'images/Logo.png' %}" /> 
+            </div>
+            <div class="my-5 py-3 ml-2 px-0">
+                <h2>Supermarket Management System</h2>
+            </div>
+            <div class="my-5 py-3 ml-2 px-0">
+                <p><small>A PES University Web Frameworks Project</small></p>
+                <a class="btn btn-primary text-white" href="{% url 'login' %}">
+                    Login
+                </a>
+            </div>
+        </div>
+        <div class="text-center overflow-hidden pt-3 pl-5">
+            <img class="d-block rounded-circle" src="{% static 'images/home.jpeg' %}" style="width: 870px; height: 870px;" alt="Landing page" />
+        </div>
+    </div>
+  
+{%endblock%}

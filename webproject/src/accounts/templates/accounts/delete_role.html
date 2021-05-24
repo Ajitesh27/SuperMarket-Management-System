@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+
+{% block content%}
+    <form method="post" action="{% url 'delete_role' object.id %}">
+    {% csrf_token %}
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">DELETE ROLE COMFIRMATION</h5>
+        </div>
+
+        <div class="modal-body my-0">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            Do you really want to delete role "{{ object }}"?
+        </div>
+
+        <div class="modal-footer form-group justify-content-start">
+            <button class="btn-danger py-1" type="submit">YES, DELETE</button>
+            <a class="btn border border-primary text-primary px-3 py-1"
+                href="#close"
+                type="reset"
+                rel="modal:close">CANCEL</a>
+        </div>
+    </form>
+{%endblock%}

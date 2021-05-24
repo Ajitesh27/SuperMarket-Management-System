@@ -1,0 +1,102 @@
+{% load widget_tweaks %}
+
+{% block content%}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById("user_logo").style.display = "none";
+            var logo = document.getElementById('nav_logo')
+            var logoText = document.getElementById('nav_title')
+            var img = document.getElementById("user_logo").getAttribute("src")
+            var title = document.getElementById("user_logo").getAttribute("alt")
+            //logo.src = img;
+            logoText.innerHTML = title;
+            selected = $("select option:selected").val();
+            if (selected == ""){
+                $("select option:selected").remove();
+            }
+            $("select").editableSelect();
+        });
+    </script>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal" style="z-index: 50px;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+    <div class="container">
+        <!-- <img id="user_logo" src="/media/{{ company.logo }}" alt="{{ company.name }}"> -->
+        <img id="user_logo" src="/media/{{ logo1.png }}" alt="{{ company.name }}">
+        <form method="post" action="{% url 'sale' %}">
+        {% csrf_token %}
+            <div class="modal-header my-0">
+                <h5 class="modal-title">SHOPPING CART</h5>
+            </div>
+
+            <div class="modal-body my-0">
+                <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                <div class="form-row">
+                    {% for field in form %}
+                        {% if field.name not in 'name,unit_price,total_amount,sold_by' %}
+                            <div class="form-group col-md-6 {% if field.errors %} invalid{% endif %}">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% render_field field class="form-control" placeholder=field.label %}
+                                    {% for error in field.errors %}
+                                        <p class="help-block">{{ error }}</p>
+                                    {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="form-group justify-content-start">
+                    <button type="submit" class="btn-primary py-1"><i class="fas fa-cart-plus mr-1"></i>ADD TO CART</button>
+                    <button type="reset" class="border-primary text-primary px-3 py-1" rel="modal:close">CANCEL</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="row text-muted border-bottom border-top py-2 mb-2 font-weight-bold">
+            <div class="col-4 pl-3">Name</div>
+            <div class="col-1 pl-0">Quantity</div>
+            <div class="col-2 pl-3">Unit Price</div>
+            <div class="col-2 pl-3">Total Amount</div>
+            <div class="col-3 pl-3">Action</div>
+        </div>
+    </div>
+    {% for sale in sales %}
+        <div class="container">
+            <div class="row highlight bg-light mb-2 py-2">
+                <div class="col-4 pl-3">{{ sale.name }}</div>
+                <div class="col-1 pl-0">{{ sale.quantity }}</div>
+                <div class="col-2 pl-3">{{ sale.unit_price }}</div>
+                <div class="col-2 pl-3">{{ sale.total_amount }}</div>
+                <div id=cart class="col-3 pl-3">
+                    <a class="btn btn-sm"
+                        title="Edit Sale"
+                        href="{% url 'edit_sale' sale.id %}"
+                        rel="modal:open"><i class="fa fa-edit mr-1"></i>Edit</a>
+                    <a class="btn btn-sm text-danger"
+                        title="Delete Sale"
+                        href="{% url 'delete_sale' sale.id %}"
+                        rel="modal:open"><i class="fa fa-trash mr-1"></i>Delete</a></div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if not total_sales.total_amount__sum is None  %}
+        <div class="container mb-5">
+            <div class="row text-muted border-bottom border-top pt-2 font-weight-bold">
+                <div class="col-6 pl-3">Grand Total</div>
+                <div class="col-3 pl-0 text-center">{{ total_sales.total_amount__sum }}</div>
+                <div class="col-3 pl-3">
+                    <a class="btn btn-sm text-primary text-uppercase"
+                    href="{% url 'checkout' %}"
+                    title="Checkout"
+                    rel="modal:open"><i class="fa fa-credit-card mr-1"></i>Checkout</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{%endblock%}

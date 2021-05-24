@@ -1,0 +1,41 @@
+body {
+    font-weight: 200;
+    font-size: 14px;
+}
+.header {
+    font-size: 18px;
+    font-weight: 100;
+    text-align: center;
+    color: #007cae;
+}
+.footer {
+    font-size: 12px;
+    font-weight: 100;
+    text-align: center;
+}
+.title {
+    font-size: 15px;
+    font-weight: 100;
+   /* text-align: right;*/
+   padding: 10px 20px 0px 20px;  
+}
+.title span {
+    color: #007cae;
+}
+.details {
+    padding: 10px 20px 0px 20px;
+    text-align: left !important;
+    /*margin-left: 40%;*/
+}
+.hrItem {
+    border: none;
+    width: 1000px;
+    /* Set the hr color */
+    color: #333; /* old IE */
+    background-color: #fff; /* Modern Browsers */
+}
+.image {
+    height: 38px;
+    width: 40px;
+    margin-right: 10px;
+}

@@ -1,0 +1,114 @@
+{% load static %}
+<script>
+    function search(val){
+        if (val != ""){
+            pageurl = href="{% url 'search_user' %}?q="+val;
+            $("#view").load(pageurl);
+        }else{
+            $("#view").load("{% url 'accounts' %}");
+        }
+    }
+    $(document).ready(function() {
+        document.getElementById("user_logo").style.display = "none";
+        var logo = document.getElementById('nav_logo')
+        var logoText = document.getElementById('nav_title')
+        var img = document.getElementById("user_logo").getAttribute("src")
+        var title = document.getElementById("user_logo").getAttribute("alt")
+        //logo.src = img;
+        logoText.innerHTML = title;
+
+        $("button").click(function() {
+            $("#view").load("{% url 'accounts' %}");
+        });
+    });
+</script>
+<div class="container my-2">
+    <!-- <img id="user_logo" src="/media/{{ company.logo }}" alt="{{ company.name }}"> -->
+    <img id="user_logo" src="/media/{{ logo1.png }}" alt="{{ company.name }}">
+    <div class="row navbar navbar-light mb-3 text-monospace">
+        <h5 class="text-uppercase font-weight-lighter">User Accounts</h5>
+        {% if account_list %}  
+            <div class="form-row">
+                <div class="col col-md-8">
+                    <input type="text" name="search" class="form-control" placeholder="Enter search username" oninput="search(this.value)"> 
+                </div>
+                <div class="col col-md-2">
+                    <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+                </div>
+            </div> 
+            <a class="nav-link border border-primary px-4 py-1 text-primary"
+                href="{% url 'account_report' %}"
+                title="Accounts Report"><i class="fa fa-file-pdf-o mr-1"></i>Export</a>    
+        {% endif %}
+    </div>
+    {% if not account_list %}
+        <div class="d-flex text-monospace justify-content-center">
+            <p class="">No records found! <br /><br />
+            <button type="button" class="btn btn-outline-primary">Clear Filter</button>
+            </p>
+        </div>
+    {% endif %}
+    <style type="text/css">
+        .parent .row:hover {
+            background-color: gray;
+            box-shadow: 0 1rem 1.5rem rgba(0,0,0,.07)!important;
+          }
+    </style>
+    <!-- content -->
+    {% if account_list %}
+        <div class="text-monospace">
+            <div class="row text-muted border-bottom mb-2">
+                <div class="col-3 pl-4">Username</div>
+                <div class="col-3 px-0">Role</div>
+                <div class="col-3 px-0">Email</div>
+                <div class="col-1">Admin</div>
+                <div class="col-2">Status</div>
+            </div>
+            {% for account in account_list %}
+                <div class="parent">
+                    <div class="row highlight bg-light mb-2 py-2">
+                        <div class="col-3 pl-4">{{ account.username }}</div>
+                        <div class="col-3 px-0">{{ account.groups.all.0.name }}</div>
+                        <div class="col-3 px-0">{{ account.email }}</div>
+                        <div class="col-1">
+                            {% if account.is_admin %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </div>
+                        <div class="col-2">
+                            {% if account.is_active %}
+                                Active
+                            {% else %}
+                                Disabled
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="page" class="pagination justify-content-end mt-4"> 
+                <span class="step-links">
+                    <span>
+                        {% if page_obj.has_previous %}
+                            <a class="btn" href="#{% url 'accounts' %}?page={{ page_obj.previous_page_number }}">PREVIOUS</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">PREVIOUS</a>
+                        {% endif %}
+                    </span>
+                    <span>
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+                    <span>
+                        {% if page_obj.has_next %}
+                            <a class="btn" href="#{% url 'accounts' %}?page={{ page_obj.next_page_number }}">NEXT</a>
+                        {% else %}
+                            <a href="#" class="btn disabled text-muted">NEXT</a>
+                        {% endif %}
+                    </span>
+                </span>
+            </div>
+        </div>
+    {% endif %}
+    <!-- End of content -->
+</div>

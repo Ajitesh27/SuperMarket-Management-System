@@ -1,0 +1,23 @@
+{% extends "accounts/nav.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title%}Login{%endblock%}
+
+{% block content%}
+  <div class="container border mt-5" style="width: 40%">
+    <form method="POST">
+        <legend class="border-bottom my-4">Login</legend>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+    <div class="my-2"></div>
+        <small>Don't have an account? Contant your adminstrator.</small>
+    </div>
+  </div>
+{%endblock%}
+
+{% block footer %}
+    {% include 'accounts/footer.html' %}
+{%endblock%}

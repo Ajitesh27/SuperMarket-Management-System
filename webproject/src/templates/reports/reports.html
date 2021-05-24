@@ -1,0 +1,54 @@
+{% extends 'accounts/nav.html' %}
+
+{% block title%}Settings{%endblock%}
+
+{% block content %}
+    <script>
+        $(document).ready(function() {
+            $("#view").load("{% url 'accounts' %}");
+            $("#index #disp a").click(function() {
+                $("a.selected").removeClass("selected")
+                $(this).addClass("selected");
+                page = "{% url 'accounts' %}"
+                pageurl = ""
+                if ($(this).attr("id") == 'stocks'){
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "stocks");
+                } else if ($(this).attr("id") == 'purchases'){
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "purchases");
+                }else if ($(this).attr("id") == 'sales'){
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "sales");
+                }else if ($(this).attr("id") == 'categories'){
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "expenses");
+                }else if ($(this).attr("id") == 'expenses'){
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "expenses");
+                }else if ($(this).attr("id") == 'analysis'){
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                    pageurl = pageurl.replace("accounts", "analysis");
+                }else{  
+                    pageurl = page.replace("accounts",$(this).attr("id"));
+                }
+                $("#view").load(pageurl);
+            });
+        });
+    </script>
+    <div class="container my-4" style="max-width: 90%;">
+        <div id=disp class="sidenav">
+            <a id =accounts class="selected" href="#users"></i>Accounts</a>
+            <a id ="roles" href="#roles">Roles</a> 
+            <a id="stocks" href="#stocks">Stocks</a>
+            <a id="purchases" href="#purchases">Purchases</a>
+            <a id="sales" href="#sales">Sales</a>
+            <a id="categories" href="#categories">Expenses Category</a>
+            <a id="expenses" href="#expense">Expenses</a>
+            <a id="analysis" href="#analysis">Analytics</a>
+        </div>
+        <div class="embed-responsive main" style="max-width: 92%;">
+            <div id='view'></div>
+        </div>
+    </div>
+{% endblock %}
